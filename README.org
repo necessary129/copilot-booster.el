@@ -1,0 +1,69 @@
+* copilot-booster
+:PROPERTIES:
+:CUSTOM_ID: copilot-booster
+:END:
+emacs-lsp-booster for copilot.el
+
+Based on [[https://github.com/jdtsmith/eglot-booster][eglot-booster]]
+
+** Installation
+:PROPERTIES:
+:CUSTOM_ID: installation
+:END:
+Ensure =emacs-lsp-booster= is installed and in "$PATH".
+
+*** Doom Emacs
+:PROPERTIES:
+:CUSTOM_ID: doom-emacs
+:END:
+In your =packages.el=, add:
+
+#+begin_src emacs-lisp
+(package! copilot-booster
+  :recipe (:host github :repo "necessary129/copilot-booster"))
+#+end_src
+
+In your =config.el= add:
+
+#+begin_src emacs-lisp
+(use-package! copilot-booster
+  :after copilot
+  :config
+  (copilot-booster-mode))
+#+end_src
+
+*** Straight
+:PROPERTIES:
+:CUSTOM_ID: straight
+:END:
+#+begin_src emacs-lisp
+(use-package copiler-booster
+    :straight (copilot-booster :host github :repo "necessary129/copilot-booster")
+    :after copilot
+    :config (copilot-booster-mode))
+#+end_src
+
+** Usage
+:PROPERTIES:
+:CUSTOM_ID: usage
+:END:
+You can set the minor mode =copilot-booster-mode= to enable the booster.
+Make sure to run =M-x copilot-diagnose= to restart the copilot process
+after toggling the mode.
+
+*** [[https://github.com/jdtsmith/eglot-booster#io-only][I/O only mode]]
+:PROPERTIES:
+:CUSTOM_ID: io-only-mode
+:END:
+
+Emacs v30 introduced a much faster JSON parser.
+[[https://www.reddit.com/r/emacs/comments/1jsxamc/the_new_json_parser_is_fast/][Testing]]
+shows that it decodes faster than elisp bytecode, but the I/O takes
+longer. So with bytecode disabled, lightweight messages from
+server->Emacs go a bit slower, and heavy messages go faster. Definitely
+worth testing.
+
+=emacs-lsp-booster= offers the option =--disable-bytecode=. Setting
+=copilot-booster-io-only=t= will use this option, processing JSON as
+normal. This way you still get the benefit of I/O buffering, but can use
+Emacs' native JSON parser (which was substantially sped-up in v30).
